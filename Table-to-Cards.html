@@ -1,0 +1,191 @@
+<!-- This is a sample of code to turn an HTML Table into Java Script Cards -->
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+    } /* Add a border to all table cells */
+
+    th {
+        background-color: #f2f2f2;
+    } /* Light grey background */
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> // jQuery library
+<style>
+    body {
+        background-color: #eee;
+    } /* Add a black background color to the whole page */
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        background-color: #fff;
+        width: 100%;
+        box-shadow: 0px 2px 8px #e6e6e6;
+        margin: 20px 0;
+        display: flex;
+        flex-wrap: wrap;
+    } /* Add a border to all cards */
+
+    .card .c-details {
+        width: 100%;
+        padding: 20px;
+    } /* Add some padding inside the card */
+
+    .c-details span {
+        font-weight: 300;
+        font-size: 13px;
+    }  /* Make the text inside the card smaller */
+
+    .icon {
+        width: 50px;
+        height: 50px;
+        background-color: #eee;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 39px;
+        margin-right: 20px;
+    } /* Add a image to all cards */
+
+    .badge span {
+        background-color: #fffbec;
+        width: 60px;
+        height: 25px;
+        padding: 3px 0;
+        border-radius: 5px;
+        display: flex;
+        color: #fed85d;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    } /* Add a badge to all cards */
+
+    .progress {
+        height: 10px;
+        border-radius: 10px;
+        background-color: #e6e6e6;
+        width: 100%;
+        margin-top: 20px;
+        overflow: hidden;
+    } 
+
+    .progress div {
+        height: 100%;
+        background-color: red;
+        width: 75%;
+    }
+
+    .text1 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 20px;
+    } /* Make the text inside the card bigger */
+
+    .text2 {
+        color: #a5aec0;
+        margin-top: 10px;
+    } /* Make the text inside the card smaller */
+</style>
+<table class="table-data">
+    <thead>
+      <tr>
+        <!-- Add a table header this will be used as badge later on-->
+        <th colspan="5">Badge/Deparment Name</th>
+      </tr>
+      <th>Name</th>
+      <th>Position</th>
+      <th>Phone</th>
+      <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <!-- Add a table row  with a person's info -->
+        <td>Jason C</td>
+        <td>Random Title</Script></td>
+        <td>555-333-4444</td>
+        <td>example@example.com</td>
+      </tr>
+      <tr>
+        <td>Aaron V</td>
+        <td>Another Random Title</td>
+        <td>555-333-4444</td>
+        <td>example@example.com</td>
+      </tr>
+      </tr>
+    </tbody>
+  </table>
+<script>
+    /// For loop for all tables that have the class table-data
+    const tables = document.querySelectorAll('.table-data'); /* Get all tables with the class table-data */
+
+    tables.forEach(table => {
+      const thead = table.querySelector('thead'); /* Get the table header */
+      const tbody = table.querySelector('tbody'); /* Get the table body */
+
+      const tableName = thead.querySelector('th').textContent; /* Get the table name */
+
+      const cardsContainer = document.createElement('div'); /* Create a div to hold the cards */
+      cardsContainer.classList.add('container', 'mt-5', 'mb-3'); /* Add classes to the div */
+
+      tbody.querySelectorAll('tr').forEach((row, i) => { /* Loop through all the rows in the table */
+        const [name, position, phone, email] = row.querySelectorAll('td'); /* Get all the cells in the row */
+
+        const card = document.createElement('div'); /* Create a div to hold the card */
+        card.classList.add('card', 'p-3', 'mb-2'); /* Add classes to the div */
+
+        /* Add the card HTML (this is so that the JS knows what the table looks like to convert it to cards */
+        card.innerHTML = `
+      <div class="d-flex justify-content-between"> 
+        <div class="d-flex flex-row align-items-center">
+          <div class="icon"> <i class="bx bxl-user"></i> </div>
+          <div class="ms-2 c-details">
+            <h6 class="mb-0">${position.textContent}</h6>
+            <span>${name.textContent}</span>
+          </div>
+        </div>
+        <div class="badge"> <span>${tableName}</span> </div>
+      </div>
+      <div class="mt-5">
+        <h3 class="heading">${name.textContent}</h3>
+        <div class="mt-5">
+          <div class="details">
+            <div class="phone">${phone.textContent}</div>
+            <div class="email">${email.textContent}</div>
+          </div>
+        </div>
+      </div>
+    `; /* Add the card HTML */
+
+        const col = document.createElement('div'); /* Create a div to hold the column */
+        col.classList.add('col-md-4'); /* Add classes to the div */
+        col.appendChild(card); /* Add the card to the div */
+
+        cardsContainer.appendChild(col); /* Add the column to the div */
+
+        if ((i + 1) % 200 === 0) { /* If the row is divisible by 200 or how many rows in total you have in the page */
+          const row = document.createElement('div'); /* Create a div to hold the row */
+          row.classList.add('row'); /* Add classes to the div */
+          row.appendChild(cardsContainer); /* Add the div to the row */
+          table.parentNode.insertBefore(row, table); /* Add the row to the table */
+
+          cardsContainer = document.createElement('div'); /* Create a new div to hold the cards */
+          cardsContainer.classList.add('container', 'mt-5', 'mb-3'); /* Add classes to the div */
+        }
+      });
+
+      if (cardsContainer.children.length > 0) { /* If there are cards in the div */
+        const row = document.createElement('div'); /* Create a div to hold the row */
+        row.classList.add('row'); /* Add classes to the div */
+        row.appendChild(cardsContainer); /* Add the div to the row */
+        table.parentNode.insertBefore(row, table); /* Add the row to the table */
+      }
+
+      table.remove(); /* Remove the table */
+    });
+
+  </script>
